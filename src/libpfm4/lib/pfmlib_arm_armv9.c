@@ -38,7 +38,7 @@
 #include "events/arm_neoverse_v2_events.h"	/* Arm Neoverse V2 table */
 #include "events/arm_neoverse_v3_events.h"	/* Arm Neoverse V3 table */
 #include "events/arm_fujitsu_monaka_events.h"	/* Fujitsu FUJITSU-MONAKA PMU tables */
-#include "events/arm_cortex_x4_events.h"	/* Arm Cortex X4 table */
+#include "events/arm_cortex_x4_events.h"	/* Arm Cortex X4/X925 table */
 
 static int
 pfm_arm_detect_n2(void *this)
@@ -90,6 +90,15 @@ pfm_arm_detect_cortex_x4(void *this)
 {
 	/* ARM Cortex X4 */
 	arm_cpuid_t attr = { .impl = 0x41, .arch = 9, .part = 0xd82 };
+
+	return pfm_arm_detect(&attr, NULL);
+}
+
+static int
+pfm_arm_detect_cortex_x925(void *this)
+{
+	/* ARM Cortex X4 */
+	arm_cpuid_t attr = { .impl = 0x41, .arch = 9, .part = 0xd85 };
 
 	return pfm_arm_detect(&attr, NULL);
 }
@@ -231,6 +240,32 @@ pfmlib_pmu_t arm_cortex_x4_support={
 	.pe				= arm_cortex_x4_pe,
 
 	.pmu_detect		= pfm_arm_detect_cortex_x4,
+	.max_encoding		= 1,
+	.num_cntrs		= 6, /* or 31 */
+
+	.get_event_encoding[PFM_OS_NONE] = pfm_arm_get_encoding,
+	 PFMLIB_ENCODE_PERF(pfm_arm_get_perf_encoding),
+	.get_event_first	= pfm_arm_get_event_first,
+	.get_event_next		= pfm_arm_get_event_next,
+	.event_is_valid		= pfm_arm_event_is_valid,
+	.validate_table		= pfm_arm_validate_table,
+	.get_event_info		= pfm_arm_get_event_info,
+	.get_event_attr_info	= pfm_arm_get_event_attr_info,
+	 PFMLIB_VALID_PERF_PATTRS(pfm_arm_perf_validate_pattrs),
+	.get_event_nattrs	= pfm_arm_get_event_nattrs,
+};
+
+pfmlib_pmu_t arm_cortex_x925_support={
+	.desc			= "ARM Cortex X925",
+	.name			= "arm_x925",
+	.perf_name              = "armv8_pmuv3_0,armv8_pmuv3_1",
+	.pmu			= PFM_PMU_ARM_CORTEX_X925,
+	.pme_count		= LIBPFM_ARRAY_SIZE(arm_cortex_x4_pe),
+	.type			= PFM_PMU_TYPE_CORE,
+	.supported_plm  = ARMV9_PLM,
+	.pe				= arm_cortex_x4_pe,
+
+	.pmu_detect		= pfm_arm_detect_cortex_x925,
 	.max_encoding		= 1,
 	.num_cntrs		= 6, /* or 31 */
 
