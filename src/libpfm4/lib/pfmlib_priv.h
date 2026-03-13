@@ -859,6 +859,7 @@ extern pfmlib_pmu_t arm_n3_support;
 extern pfmlib_pmu_t arm_v1_support;
 extern pfmlib_pmu_t arm_v2_support;
 extern pfmlib_pmu_t arm_v3_support;
+extern pfmlib_pmu_t arm_v3ae_support;
 
 extern pfmlib_pmu_t arm_thunderx2_support;
 extern pfmlib_pmu_t arm_thunderx2_dmc0_support;

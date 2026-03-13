@@ -838,6 +838,7 @@ typedef enum {
 
 	PFM_PMU_ARM_CORTEX_X4,		/* ARM Cortex X4 (ARMv9) */
 	PFM_PMU_ARM_CORTEX_X925,	/* ARM Cortex X925 (ARMv9) */
+	PFM_PMU_ARM_V3AE,		/* Arm Neoverse V3AE (ARMv9) */
 	/* MUST ADD NEW PMU MODELS HERE */
 
 	PFM_PMU_MAX			/* end marker */

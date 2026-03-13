@@ -689,6 +689,7 @@ static pfmlib_pmu_t *pfmlib_pmus[]=
 	&arm_v1_support,
 	&arm_v2_support,
 	&arm_v3_support,
+	&arm_v3ae_support,
 	&arm_hisilicon_kunpeng_support,
 	&arm_hisilicon_kunpeng_sccl1_ddrc0_support,
 	&arm_hisilicon_kunpeng_sccl1_ddrc1_support,
@@ -827,6 +828,7 @@ static pfmlib_pmu_t *pfmlib_pmus[]=
 	&arm_v1_support,
 	&arm_v2_support,
 	&arm_v3_support,
+	&arm_v3ae_support,
 	&arm_hisilicon_kunpeng_support,
 #endif
 

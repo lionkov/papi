@@ -36,7 +36,7 @@
 #include "events/arm_neoverse_n2_events.h"	/* Arm Neoverse N2 table */
 #include "events/arm_neoverse_n3_events.h"	/* Arm Neoverse N3 table */
 #include "events/arm_neoverse_v2_events.h"	/* Arm Neoverse V2 table */
-#include "events/arm_neoverse_v3_events.h"	/* Arm Neoverse V3 table */
+#include "events/arm_neoverse_v3_events.h"	/* Arm Neoverse V3/V3AE table */
 #include "events/arm_fujitsu_monaka_events.h"	/* Fujitsu FUJITSU-MONAKA PMU tables */
 #include "events/arm_cortex_x4_events.h"	/* Arm Cortex X4/X925 table */
 
@@ -72,6 +72,15 @@ pfm_arm_detect_v3(void *this)
 {
 	/* ARM Neoverse V3 */
 	arm_cpuid_t attr = { .impl = 0x41, .arch = 9, .part = 0xd84 };
+
+	return pfm_arm_detect(&attr, NULL);
+}
+
+static int
+pfm_arm_detect_v3ae(void *this)
+{
+	/* ARM Neoverse V3 */
+	arm_cpuid_t attr = { .impl = 0x41, .arch = 9, .part = 0xd83 };
 
 	return pfm_arm_detect(&attr, NULL);
 }
@@ -188,6 +197,31 @@ pfmlib_pmu_t arm_v3_support={
 	.pe				= arm_neoverse_v3_pe,
 
 	.pmu_detect		= pfm_arm_detect_v3,
+	.max_encoding		= 1,
+	.num_cntrs		= 6,
+
+	.get_event_encoding[PFM_OS_NONE] = pfm_arm_get_encoding,
+	 PFMLIB_ENCODE_PERF(pfm_arm_get_perf_encoding),
+	.get_event_first	= pfm_arm_get_event_first,
+	.get_event_next		= pfm_arm_get_event_next,
+	.event_is_valid		= pfm_arm_event_is_valid,
+	.validate_table		= pfm_arm_validate_table,
+	.get_event_info		= pfm_arm_get_event_info,
+	.get_event_attr_info	= pfm_arm_get_event_attr_info,
+	 PFMLIB_VALID_PERF_PATTRS(pfm_arm_perf_validate_pattrs),
+	.get_event_nattrs	= pfm_arm_get_event_nattrs,
+};
+
+pfmlib_pmu_t arm_v3ae_support={
+	.desc			= "Arm Neoverse V3AE",
+	.name			= "arm_v3ae",
+	.pmu			= PFM_PMU_ARM_V3AE,
+	.pme_count		= LIBPFM_ARRAY_SIZE(arm_neoverse_v3_pe),
+	.type			= PFM_PMU_TYPE_CORE,
+	.supported_plm  = ARMV9_PLM,
+	.pe				= arm_neoverse_v3_pe,
+
+	.pmu_detect		= pfm_arm_detect_v3ae,
 	.max_encoding		= 1,
 	.num_cntrs		= 6,
 
