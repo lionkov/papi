@@ -2414,6 +2414,7 @@ PRESET,PAPI_CUDA_FP8_OPS,NOT_DERIVED,cuda:::sm__ops_path_tensor_src_fp8:stat=sum
 #########################
 CPU,arm_v2
 CPU,arm_v3ae
+CPU,arm_x925
 #
 PRESET,PAPI_TOT_INS,NOT_DERIVED,INST_RETIRED
 PRESET,PAPI_INT_INS,NOT_DERIVED,DP_SPEC
